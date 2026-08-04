@@ -1,2 +1,15 @@
-@import "tailwindcss";
-@plugin "daisyui";
+@import 'tailwindcss';
+@plugin 'daisyui' {
+  themes: all;
+}
+
+/* Global Tooltip Hover Delay */
+.tooltip::before,
+.tooltip::after {
+  transition-delay: 0s;
+}
+
+.tooltip:hover::before,
+.tooltip:hover::after {
+  transition-delay: 1s;
+}

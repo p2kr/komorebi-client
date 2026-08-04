@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",
     "module": "esnext",
@@ -16,6 +17,21 @@
     "allowJs": true,
     "checkJs": true,
     "moduleDetection": "force",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@appbar/*": ["./src/lib/appbar/*"],
+      "@browser/*": ["./src/lib/browser/*"],
+      "@crawler/*": ["./src/lib/crawler/*"],
+      "@dashboard/*": ["./src/lib/dashboard/*"],
+      "@home/*": ["./src/lib/home/*"],
+      "@settings/*": ["./src/lib/settings/*"],
+      "@utils/*": ["./src/lib/utils/*"],
+      "@vault/*": ["./src/lib/vault/*"],
+      "@user/*": ["./src/lib/user/*"],
+      "@navigation/*": ["./src/lib/navigation/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
 }
