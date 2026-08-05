@@ -1,4 +1,7 @@
-export type MediaProvider = 'MAL' | 'AniList';
+import { doApiCall, type FailureResponse, type SuccessResponse } from "../utils/api";
+import { StorageKeys } from "../utils/constants";
+
+export type MediaProvider = "MAL" | "AniList";
 
 export interface User {
   id: string; // Uuid v7
@@ -21,10 +24,8 @@ export interface CreateUserPayload {
 
 export function isUserSandbox(user: User | null | undefined): boolean {
   if (!user) return true;
-  return user.is_sandbox ?? (!user.access_token || user.access_token.trim() === '');
+  return user.is_sandbox ?? (!user.access_token || user.access_token.trim() === "");
 }
-
-const STORAGE_ACTIVE_USER_KEY = 'komorebi_active_user_id';
 
 class UserManager {
   users = $state<User[]>([]);
@@ -40,19 +41,17 @@ class UserManager {
     this.isLoading = true;
     this.error = null;
     try {
-      const response = await fetch('/api/v1/user/all');
-      const contentType = response.headers.get('content-type');
-      if (response.ok && contentType && contentType.includes('application/json')) {
-        const data: User[] = await response.json();
-        this.users = data;
+      const response = await doApiCall<User[]>("user/all");
+      if (response.success) {
+        this.users = (response as SuccessResponse<User[]>).data;
         this.restoreActiveUser();
       } else {
-        // Backend API endpoint not active or returning HTML fallback
+        const failure = response as FailureResponse;
+        this.error = `Failed to fetch users: ${failure.error?.msg || "Unknown error"}`;
         this.restoreActiveUser();
       }
     } catch (err: unknown) {
-      // In local dev without active backend endpoint, fallback gracefully
-      this.error = err instanceof Error ? err.message : 'Network error fetching users';
+      this.error = err instanceof Error ? err.message : "Network error fetching users";
       this.restoreActiveUser();
     } finally {
       this.isLoading = false;
@@ -60,8 +59,8 @@ class UserManager {
   }
 
   private restoreActiveUser() {
-    if (typeof window === 'undefined') return;
-    const activeId = localStorage.getItem(STORAGE_ACTIVE_USER_KEY);
+    if (typeof window === "undefined") return;
+    const activeId = localStorage.getItem(StorageKeys.ACTIVE_USER_KEY);
     if (activeId && this.users.length > 0) {
       const found = this.users.find((u) => u.id === activeId);
       if (found) {
@@ -72,7 +71,7 @@ class UserManager {
 
     if (this.users.length > 0) {
       this.currentUser = this.users[0];
-      localStorage.setItem(STORAGE_ACTIVE_USER_KEY, this.users[0].id);
+      localStorage.setItem(StorageKeys.ACTIVE_USER_KEY, this.users[0].id);
     } else {
       this.currentUser = null;
     }
@@ -81,8 +80,8 @@ class UserManager {
   selectUser(id: string | null) {
     if (!id) {
       this.currentUser = null;
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem(STORAGE_ACTIVE_USER_KEY);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(StorageKeys.ACTIVE_USER_KEY);
       }
       return;
     }
@@ -90,8 +89,8 @@ class UserManager {
     const found = this.users.find((u) => u.id === id);
     if (found) {
       this.currentUser = found;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_ACTIVE_USER_KEY, found.id);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(StorageKeys.ACTIVE_USER_KEY, found.id);
       }
     }
   }
@@ -107,14 +106,18 @@ class UserManager {
     this.error = null;
   }
 
-  async addUser(providerOrPayload: MediaProvider | CreateUserPayload = 'AniList'): Promise<User | null> {
+  async addUser(
+    providerOrPayload: MediaProvider | CreateUserPayload = "AniList"
+  ): Promise<User | null> {
     this.cancelOAuth(); // Cancel any existing pending OAuth flow
     this.isLoading = true;
     this.error = null;
 
-    const isPayloadObj = typeof providerOrPayload === 'object';
+    const isPayloadObj = typeof providerOrPayload === "object";
     const provider: MediaProvider = isPayloadObj ? providerOrPayload.provider : providerOrPayload;
-    const is_sandbox = isPayloadObj ? (providerOrPayload.is_sandbox ?? !providerOrPayload.access_token) : false;
+    const is_sandbox = isPayloadObj
+      ? (providerOrPayload.is_sandbox ?? !providerOrPayload.access_token)
+      : false;
 
     const username =
       isPayloadObj && providerOrPayload.username && providerOrPayload.username.trim()
@@ -123,67 +126,51 @@ class UserManager {
           ? `sandbox_${provider.toLowerCase()}`
           : `${provider} Account`;
 
-    const avatar_url = isPayloadObj ? providerOrPayload.avatar_url ?? null : null;
-    const access_token = is_sandbox ? null : (isPayloadObj ? providerOrPayload.access_token ?? null : null);
+    const avatar_url = isPayloadObj ? (providerOrPayload.avatar_url ?? null) : null;
+    const access_token = is_sandbox
+      ? null
+      : isPayloadObj
+        ? (providerOrPayload.access_token ?? null)
+        : null;
 
     const OAUTH_TIMEOUT_MS = 3 * 60 * 1000; // 3 minutes
     const controller = new AbortController();
     this.currentAbortController = controller;
 
     const timeoutId = setTimeout(() => {
-      controller.abort('timeout');
+      controller.abort("timeout");
     }, OAUTH_TIMEOUT_MS);
 
     try {
-      const response = await fetch('/api/v1/user/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
+      const response = await doApiCall(
+        "user/add",
+        {
           provider,
           username,
           avatar_url,
           access_token,
-        }),
-      });
+        },
+        "POST",
+        controller.signal
+      );
 
-      const contentType = response.headers.get('content-type');
-      if (response.ok && contentType && contentType.includes('application/json')) {
-        const newUser: User = await response.json();
+      if (response.success) {
+        const newUser: User = (response as SuccessResponse<User>).data;
         this.users = [...this.users, newUser];
         this.selectUser(newUser.id);
         return newUser;
-      } else if (!response.ok) {
-        const errText = await response.text();
-        this.error = `Failed to add user: ${errText || response.statusText}`;
       } else {
-        // Dev fallback if server returned HTML (e.g. Vite SPA fallback)
-        throw new Error('Non-JSON response received from server');
+        const failure = response as FailureResponse;
+        this.error = `Failed to add user: ${failure.error?.msg || "Unknown error"}`;
       }
     } catch (err: unknown) {
-      if (err instanceof Error && err.name === 'AbortError') {
-        if (controller.signal.reason === 'timeout') {
-          this.error = 'Sign-in timed out after 3 minutes. Please try again.';
+      if (err instanceof Error && err.name === "AbortError") {
+        if (controller.signal.reason === "timeout") {
+          this.error = "Sign-in timed out after 3 minutes. Please try again.";
         }
         return null;
       }
-      // Local development fallback simulation if backend server is not running
-      const now = Date.now();
-      const fallbackUser: User = {
-        id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `usr_${now}`,
-        username,
-        avatar_url,
-        provider,
-        access_token,
-        is_sandbox,
-        created_at: now,
-        updated_at: now,
-      };
-      this.users = [...this.users, fallbackUser];
-      this.selectUser(fallbackUser.id);
-      return fallbackUser;
+      this.error = err instanceof Error ? err.message : "Network error adding user";
     } finally {
       clearTimeout(timeoutId);
       if (this.currentAbortController === controller) {
@@ -198,25 +185,17 @@ class UserManager {
     this.isLoading = true;
     this.error = null;
     try {
-      const response = await fetch('/api/v1/user/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
-      });
+      const response = await doApiCall("user/delete", { id }, "DELETE");
 
-      if (response.ok || response.status === 204) {
+      if (response.success) {
         this.handleLocalDelete(id);
         return true;
       } else {
-        const errText = await response.text();
-        this.error = `Failed to delete user: ${errText || response.statusText}`;
+        const failure = response as FailureResponse;
+        this.error = `Failed to delete user: ${failure.error?.msg || "Unknown error"}`;
       }
-    } catch {
-      // Local fallback delete
-      this.handleLocalDelete(id);
-      return true;
+    } catch (err: unknown) {
+      this.error = err instanceof Error ? err.message : "Network error deleting user";
     } finally {
       this.isLoading = false;
     }

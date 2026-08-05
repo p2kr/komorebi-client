@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Sparkles, X, LogIn, HardDrive, Check, ExternalLink } from '@lucide/svelte';
-  import { userManager, type MediaProvider } from '@utils/user.svelte';
+  import { userManager, type MediaProvider } from './user.svelte';
 
   interface Props {
     modalRef?: HTMLDialogElement | null;

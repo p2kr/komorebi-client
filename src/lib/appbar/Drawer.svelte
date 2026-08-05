@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ChevronLeft, ChevronRight } from '@lucide/svelte';
   import { router, MAIN_NAV_ITEMS, SETTINGS_NAV_ITEM } from '@navigation/router.svelte';
+  import clsx from 'clsx';
 
   interface Props {
     isCollapsed?: boolean;
@@ -13,12 +14,17 @@
 </script>
 
 <aside
-  class={`relative z-20 bg-base-200 text-base-content border-base-300 flex h-full flex-col border-r transition-all duration-300 ease-in-out select-none ${
+  class={`bg-base-200 text-base-content border-base-300 relative z-20 flex h-full flex-col border-r transition-all duration-300 ease-in-out select-none ${
     isCollapsed ? 'w-16' : 'w-64'
   }`}
 >
   <!-- Main Navigation Menu -->
-  <div class={`flex-1 p-2 ${isCollapsed ? 'overflow-visible' : 'overflow-x-hidden overflow-y-auto'}`}>
+  <div
+    class={clsx('flex-1 p-2', {
+      'overflow-visible': isCollapsed,
+      'overflow-x-hidden overflow-y-auto': !isCollapsed,
+    })}
+  >
     <ul class="menu menu-md w-full space-y-1 p-0">
       {#each MAIN_NAV_ITEMS as item (item.id)}
         {@const Icon = item.icon}
@@ -27,9 +33,11 @@
           <button
             type="button"
             onclick={() => router.navigate(item.id)}
-            class={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${
-              isActive ? 'active bg-primary text-primary-content font-medium' : 'hover:bg-base-300'
-            } ${isCollapsed ? 'tooltip tooltip-right justify-center px-0' : ''}`}
+            class={clsx('flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors', {
+              'active bg-primary text-primary-content font-medium': isActive,
+              'hover:bg-base-300': !isActive,
+              'tooltip tooltip-right justify-center px-0': isCollapsed,
+            })}
             data-tip={isCollapsed ? item.label : undefined}
           >
             <Icon class="size-5 shrink-0" />

@@ -30,7 +30,8 @@
       {/if}
     </button>
 
-    <span class="text-primary text-xl font-bold tracking-tight select-none flex items-center gap-2">
+    <!-- LOGO -->
+    <span class="text-primary font-segoe-script text-xl font-bold tracking-tight select-none flex items-center gap-2">
       {Constants.APP_NAME}
     </span>
   </div>

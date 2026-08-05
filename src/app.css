@@ -13,3 +13,7 @@
 .tooltip:hover::after {
   transition-delay: 1s;
 }
+
+.font-segoe-script {
+  font-family: 'Segoe Script', 'Segoe Print', cursive, sans-serif;
+}

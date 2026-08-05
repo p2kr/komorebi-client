@@ -7,7 +7,7 @@
     Trash2,
     Key,
   } from '@lucide/svelte';
-  import { userManager, isUserSandbox, type MediaProvider } from '@utils/user.svelte';
+  import { userManager, isUserSandbox, type MediaProvider } from './user.svelte';
   import UserConnectModal from './UserConnectModal.svelte';
 
   const currentUser = $derived(userManager.currentUser);

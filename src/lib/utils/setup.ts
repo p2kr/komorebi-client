@@ -1,5 +1,5 @@
-import { themeManager } from './theme.svelte';
-import { userManager } from './user.svelte';
+import { themeManager } from "@settings/theme.svelte";
+import { userManager } from "@user/user.svelte";
 
 export abstract class Setup {
   static init() {
@@ -7,4 +7,3 @@ export abstract class Setup {
     userManager.init();
   }
 }
-

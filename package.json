@@ -18,7 +18,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@lucide/svelte": "^1.28.0"
+    "@lucide/svelte": "^1.28.0",
+    "axios": "^1.19.0",
+    "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
