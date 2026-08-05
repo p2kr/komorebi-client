@@ -33,6 +33,8 @@ class UserManager {
   isLoading = $state<boolean>(false);
   error = $state<string | null>(null);
 
+  private currentAbortController: AbortController | null = null;
+
   async init() {
     await this.fetchUsers();
   }
@@ -94,8 +96,6 @@ class UserManager {
       }
     }
   }
-
-  private currentAbortController: AbortController | null = null;
 
   cancelOAuth() {
     if (this.currentAbortController) {

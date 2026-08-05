@@ -9,10 +9,12 @@
     Sparkles,
     Palette,
   } from '@lucide/svelte';
-  import { themeManager, THEME_PRESETS } from './theme.svelte';
+  import { themeManager } from './theme.svelte';
 
   const currentMode = $derived(themeManager.mode);
   const resolvedTheme = $derived(themeManager.resolvedTheme);
+  const presets = $derived(themeManager.presets);
+
 
   const mainModes = [
     {
@@ -129,7 +131,7 @@
     </div>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {#each THEME_PRESETS as preset (preset.id)}
+      {#each presets as preset (preset.id)}
         {@const isSelected = currentMode === preset.id}
         <button
           type="button"

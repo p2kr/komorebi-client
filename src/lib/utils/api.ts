@@ -4,6 +4,7 @@ export interface SuccessResponse<T> {
   success: boolean;
   data: T;
 }
+
 export interface FailureResponse {
   success: boolean;
   error: {
@@ -32,7 +33,14 @@ export async function doApiCall<T>(
       signal: signal,
     });
     return resp.data;
-  } catch (e) {
-    return Promise.reject(new Error(`failed to do api call due to ${e}`));
+  } catch (e: unknown) {
+    if (axios.isCancel(e) || (e instanceof Error && e.name === "CanceledError")) {
+      const abortError = new Error("Request canceled");
+      abortError.name = "AbortError";
+      throw abortError;
+    }
+    const msg = e instanceof Error ? e.message : String(e);
+    return Promise.reject(new Error(`failed to do api call due to ${msg}`));
   }
 }
+

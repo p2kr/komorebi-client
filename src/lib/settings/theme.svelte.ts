@@ -103,6 +103,14 @@ class ThemeManager {
   mode = $state<string>('system');
   resolvedTheme = $state<string>('dark');
 
+  get presets(): ThemeOption[] {
+    return THEME_PRESETS;
+  }
+
+  get activePreset(): ThemeOption | undefined {
+    return THEME_PRESETS.find((p) => p.id === this.resolvedTheme);
+  }
+
   init() {
     if (typeof window === 'undefined') return;
     const saved = localStorage.getItem('komorebi-theme') || 'system';
@@ -134,3 +142,4 @@ class ThemeManager {
 }
 
 export const themeManager = new ThemeManager();
+

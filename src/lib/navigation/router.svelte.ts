@@ -56,6 +56,14 @@ const routeComponentMap: Record<RouteId, Component> = {
   settings: Settings,
 };
 
+const navItemMap: Record<RouteId, NavItem> = [...MAIN_NAV_ITEMS, SETTINGS_NAV_ITEM].reduce(
+  (acc, item) => {
+    acc[item.id] = item;
+    return acc;
+  },
+  {} as Record<RouteId, NavItem>
+);
+
 class Router {
   activeRoute = $state<RouteId>('dashboard');
 
@@ -68,6 +76,20 @@ class Router {
   get activeComponent(): Component {
     return routeComponentMap[this.activeRoute] || Dashboard;
   }
+
+  get mainNavItems(): NavItem[] {
+    return MAIN_NAV_ITEMS;
+  }
+
+  get settingsNavItem(): NavItem {
+    return SETTINGS_NAV_ITEM;
+  }
+
+  get activeItem(): NavItem {
+    return navItemMap[this.activeRoute] || MAIN_NAV_ITEMS[0];
+  }
 }
 
 export const router = new Router();
+
+

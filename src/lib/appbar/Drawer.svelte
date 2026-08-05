@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ChevronLeft, ChevronRight } from '@lucide/svelte';
-  import { router, MAIN_NAV_ITEMS, SETTINGS_NAV_ITEM } from '@navigation/router.svelte';
+  import { router } from '@navigation/router.svelte';
   import clsx from 'clsx';
 
   interface Props {
@@ -10,7 +10,9 @@
 
   let { isCollapsed = $bindable(false), onToggle }: Props = $props();
 
-  const SettingsIcon = SETTINGS_NAV_ITEM.icon;
+  const mainNavItems = $derived(router.mainNavItems);
+  const settingsItem = $derived(router.settingsNavItem);
+  const SettingsIcon = $derived(settingsItem.icon);
 </script>
 
 <aside
@@ -26,7 +28,7 @@
     })}
   >
     <ul class="menu menu-md w-full space-y-1 p-0">
-      {#each MAIN_NAV_ITEMS as item (item.id)}
+      {#each mainNavItems as item (item.id)}
         {@const Icon = item.icon}
         {@const isActive = router.activeRoute === item.id}
         <li>
@@ -62,15 +64,16 @@
               ? 'active bg-primary text-primary-content font-medium'
               : 'hover:bg-base-300'
           } ${isCollapsed ? 'tooltip tooltip-right justify-center px-0' : ''}`}
-          data-tip={isCollapsed ? 'Settings' : undefined}
+          data-tip={isCollapsed ? settingsItem.label : undefined}
         >
           <SettingsIcon class="size-5 shrink-0" />
           {#if !isCollapsed}
-            <span class="truncate">Settings</span>
+            <span class="truncate">{settingsItem.label}</span>
           {/if}
         </button>
       </li>
     </ul>
+
 
     <button
       type="button"
@@ -92,3 +95,4 @@
     </button>
   </div>
 </aside>
+
