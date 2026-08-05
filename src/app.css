@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@plugin 'daisyui' {
+@import "tailwindcss";
+@plugin "daisyui" {
   themes: all;
 }
 
@@ -15,5 +15,5 @@
 }
 
 .font-segoe-script {
-  font-family: 'Segoe Script', 'Segoe Print', cursive, sans-serif;
+  font-family: "Segoe Script", "Segoe Print", cursive, sans-serif;
 }

@@ -43,4 +43,3 @@ export async function doApiCall<T>(
     return Promise.reject(new Error(`failed to do api call due to ${msg}`));
   }
 }
-

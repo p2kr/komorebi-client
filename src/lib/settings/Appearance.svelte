@@ -8,31 +8,30 @@
     RotateCcw,
     Sparkles,
     Palette,
-  } from '@lucide/svelte';
-  import { themeManager } from './theme.svelte';
+  } from "@lucide/svelte";
+  import { themeManager } from "./theme.svelte";
 
   const currentMode = $derived(themeManager.mode);
   const resolvedTheme = $derived(themeManager.resolvedTheme);
   const presets = $derived(themeManager.presets);
 
-
   const mainModes = [
     {
-      id: 'system',
-      name: 'System Default',
-      description: 'Automatically adjust theme based on operating system preferences',
+      id: "system",
+      name: "System Default",
+      description: "Automatically adjust theme based on operating system preferences",
       icon: Monitor,
     },
     {
-      id: 'light',
-      name: 'Light Mode',
-      description: 'Clean and vibrant light appearance',
+      id: "light",
+      name: "Light Mode",
+      description: "Clean and vibrant light appearance",
       icon: Sun,
     },
     {
-      id: 'dark',
-      name: 'Dark Mode',
-      description: 'Sleek dark theme to reduce eye strain',
+      id: "dark",
+      name: "Dark Mode",
+      description: "Sleek dark theme to reduce eye strain",
       icon: Moon,
     },
   ];
@@ -42,7 +41,7 @@
   }
 
   function handleResetTheme() {
-    themeManager.setMode('system');
+    themeManager.setMode("system");
   }
 </script>
 
@@ -51,10 +50,10 @@
     <Sparkles class="size-3.5" />
     Active:
     <span class="capitalize"
-      >{currentMode === 'system' ? `System (${resolvedTheme})` : currentMode}</span
+      >{currentMode === "system" ? `System (${resolvedTheme})` : currentMode}</span
     >
   </span>
-  {#if currentMode !== 'system'}
+  {#if currentMode !== "system"}
     <button
       type="button"
       onclick={handleResetTheme}
@@ -86,16 +85,16 @@
           onclick={() => handleSelectMode(mode.id)}
           class={`group relative flex flex-col justify-between rounded-2xl border p-5 text-left transition-all duration-200 ${
             isSelected
-              ? 'border-primary bg-primary/5 ring-primary/30 shadow-md ring-2'
-              : 'border-base-300 bg-base-100 hover:border-base-content/30 hover:bg-base-200/50'
+              ? "border-primary bg-primary/5 ring-primary/30 shadow-md ring-2"
+              : "border-base-300 bg-base-100 hover:border-base-content/30 hover:bg-base-200/50"
           }`}
         >
           <div class="flex items-start justify-between">
             <div
               class={`flex size-10 items-center justify-center rounded-xl transition-colors ${
                 isSelected
-                  ? 'bg-primary text-primary-content'
-                  : 'bg-base-200 text-base-content group-hover:bg-base-300'
+                  ? "bg-primary text-primary-content"
+                  : "bg-base-200 text-base-content group-hover:bg-base-300"
               }`}
             >
               <Icon class="size-5" />
@@ -139,8 +138,8 @@
           onclick={() => handleSelectMode(preset.id)}
           class={`group relative flex flex-col justify-between overflow-hidden rounded-xl border p-4 text-left transition-all duration-200 ${
             isSelected
-              ? 'border-primary ring-primary ring-offset-base-100 shadow-lg ring-2 ring-offset-2'
-              : 'border-base-300 hover:border-primary/50 hover:shadow-md'
+              ? "border-primary ring-primary ring-offset-base-100 shadow-lg ring-2 ring-offset-2"
+              : "border-base-300 hover:border-primary/50 hover:shadow-md"
           }`}
         >
           <!-- Card Top Header inside Theme's native environment -->
@@ -198,7 +197,7 @@
           <!-- Active Status Footer -->
           <div class="border-base-200 mt-4 flex items-center justify-between border-t pt-2 text-xs">
             <span class="text-base-content/60 group-hover:text-primary text-xs transition-colors">
-              {isSelected ? 'Active Theme' : 'Click to apply'}
+              {isSelected ? "Active Theme" : "Click to apply"}
             </span>
             <div class="flex gap-1">
               <span class="bg-primary size-2 rounded-full"></span>

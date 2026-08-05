@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Header from '@appbar/Header.svelte';
-  import Drawer from '@appbar/Drawer.svelte';
-  import { router } from '@navigation/router.svelte';
+  import Header from "@appbar/Header.svelte";
+  import Drawer from "@appbar/Drawer.svelte";
+  import { router } from "@store/router.svelte";
 
   let isCollapsed = $state(false);
 

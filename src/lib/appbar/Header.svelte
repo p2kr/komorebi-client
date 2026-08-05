@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { PanelLeftClose, PanelLeftOpen } from '@lucide/svelte';
-  import { Constants } from '@utils/constants';
-  import UserSelector from '@user/UserSelector.svelte';
+  import { PanelLeftClose, PanelLeftOpen } from "@lucide/svelte";
+  import { Constants } from "@utils/constants";
+  import UserSelector from "@user/UserSelector.svelte";
 
   interface Props {
     isCollapsed?: boolean;
@@ -20,8 +20,8 @@
       type="button"
       onclick={() => onToggleDrawer?.()}
       class="tooltip tooltip-right btn btn-square btn-ghost btn-sm"
-      aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-      data-tip={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      data-tip={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
     >
       {#if isCollapsed}
         <PanelLeftOpen class="size-5" />
@@ -31,7 +31,9 @@
     </button>
 
     <!-- LOGO -->
-    <span class="text-primary font-segoe-script text-xl font-bold tracking-tight select-none flex items-center gap-2">
+    <span
+      class="text-primary font-segoe-script flex items-center gap-2 text-xl font-bold tracking-tight select-none"
+    >
       {Constants.APP_NAME}
     </span>
   </div>

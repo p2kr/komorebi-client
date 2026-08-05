@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { ChevronLeft, ChevronRight } from '@lucide/svelte';
-  import { router } from '@navigation/router.svelte';
-  import clsx from 'clsx';
+  import { ChevronLeft, ChevronRight } from "@lucide/svelte";
+  import clsx from "clsx";
+  import { router } from "@store/router.svelte";
 
   interface Props {
     isCollapsed?: boolean;
@@ -17,14 +17,14 @@
 
 <aside
   class={`bg-base-200 text-base-content border-base-300 relative z-20 flex h-full flex-col border-r transition-all duration-300 ease-in-out select-none ${
-    isCollapsed ? 'w-16' : 'w-64'
+    isCollapsed ? "w-16" : "w-64"
   }`}
 >
   <!-- Main Navigation Menu -->
   <div
-    class={clsx('flex-1 p-2', {
-      'overflow-visible': isCollapsed,
-      'overflow-x-hidden overflow-y-auto': !isCollapsed,
+    class={clsx("flex-1 p-2", {
+      "overflow-visible": isCollapsed,
+      "overflow-x-hidden overflow-y-auto": !isCollapsed,
     })}
   >
     <ul class="menu menu-md w-full space-y-1 p-0">
@@ -35,10 +35,10 @@
           <button
             type="button"
             onclick={() => router.navigate(item.id)}
-            class={clsx('flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors', {
-              'active bg-primary text-primary-content font-medium': isActive,
-              'hover:bg-base-300': !isActive,
-              'tooltip tooltip-right justify-center px-0': isCollapsed,
+            class={clsx("flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors", {
+              "active bg-primary text-primary-content font-medium": isActive,
+              "hover:bg-base-300": !isActive,
+              "tooltip tooltip-right justify-center px-0": isCollapsed,
             })}
             data-tip={isCollapsed ? item.label : undefined}
           >
@@ -58,12 +58,12 @@
       <li>
         <button
           type="button"
-          onclick={() => router.navigate('settings')}
+          onclick={() => router.navigate("settings")}
           class={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${
-            router.activeRoute === 'settings'
-              ? 'active bg-primary text-primary-content font-medium'
-              : 'hover:bg-base-300'
-          } ${isCollapsed ? 'tooltip tooltip-right justify-center px-0' : ''}`}
+            router.activeRoute === "settings"
+              ? "active bg-primary text-primary-content font-medium"
+              : "hover:bg-base-300"
+          } ${isCollapsed ? "tooltip tooltip-right justify-center px-0" : ""}`}
           data-tip={isCollapsed ? settingsItem.label : undefined}
         >
           <SettingsIcon class="size-5 shrink-0" />
@@ -74,7 +74,6 @@
       </li>
     </ul>
 
-
     <button
       type="button"
       onclick={() => {
@@ -82,9 +81,9 @@
         else isCollapsed = !isCollapsed;
       }}
       class={`btn btn-ghost btn-sm flex w-full items-center gap-2 ${
-        isCollapsed ? 'tooltip tooltip-right justify-center px-0' : 'justify-between px-3'
+        isCollapsed ? "tooltip tooltip-right justify-center px-0" : "justify-between px-3"
       }`}
-      data-tip={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+      data-tip={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
     >
       {#if !isCollapsed}
         <span class="text-base-content/70 text-xs">Collapse</span>
@@ -95,4 +94,3 @@
     </button>
   </div>
 </aside>
-

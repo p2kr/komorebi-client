@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Constants } from '../utils/constants';
+  import { Constants } from "../utils/constants";
 </script>
 
 <div class="border-base-300 bg-base-100 space-y-4 rounded-2xl border p-6">

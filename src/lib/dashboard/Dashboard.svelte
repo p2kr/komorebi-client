@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Constants } from '@utils/constants';
+  import { Constants } from "@utils/constants";
 </script>
 
 <div class="space-y-4">
