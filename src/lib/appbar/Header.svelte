@@ -12,7 +12,7 @@
 </script>
 
 <header
-  class="navbar bg-base-100 border-base-300 z-30 flex min-h-16 w-full items-center justify-between border-b px-4 shadow-xs"
+  class="navbar bg-base-100 border-base-300 flex min-h-16 w-full items-center justify-between border-b px-4 shadow-xs"
 >
   <!-- Left Side: Sidebar Toggle & App Brand -->
   <div class="flex items-center gap-3">

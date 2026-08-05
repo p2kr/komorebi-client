@@ -13,7 +13,7 @@
 
   function getProviderBadgeClass(provider: MediaProvider) {
     switch (provider) {
-      case "AniList":
+      case "ANILIST":
         return "badge-info text-info-content";
       case "MAL":
         return "badge-primary text-primary-content";

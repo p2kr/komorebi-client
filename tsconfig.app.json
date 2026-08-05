@@ -30,7 +30,9 @@
       "@utils/*": ["./src/lib/utils/*"],
       "@vault/*": ["./src/lib/vault/*"],
       "@user/*": ["./src/lib/user/*"],
-      "@store/*": ["./src/lib/store/*"]
+      "@store/*": ["./src/lib/store/*"],
+      "@services/*": ["./src/lib/services/*"],
+      "@types/*": ["./src/lib/types/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]

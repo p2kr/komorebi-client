@@ -38,3 +38,11 @@ The centralized initialization sequence (`Setup.init()`) responsible for bootstr
 ### Transport Seam
 
 The network transport abstraction (`doApiCall`) wrapping Axios REST operations with standardized success/failure payload typing, `AbortSignal` cancellation propagation, and uniform error formatting.
+
+### Dashboard & Media Library Controls
+
+The media grid management interface permitting real-time search (by title, Romaji title, or genres), type filtering (`Anime` | `Manga`), status filtering (`current`, `completed`, `paused`, `dropped`, `planning`, `repeating`), sorting (popularity, score, title, progress, updated timestamp), custom title hierarchy selection (`primary_first` vs `alternate_first`), and metadata chip toggles (popularity, source, format, release season, studio, genres, rating score).
+
+### HTML Top Layer & Natural Stacking Architecture
+
+The layout architecture relies on native HTML DOM flow and modern browser APIs instead of manual CSS `z-index` micro-management. Page elements (headers, sidebars, panels) follow standard Flexbox document order, while modals (`UserConnectModal`, `DashboardSettingsModal`) utilize native HTML `<dialog>` elements promoted directly into the browser's native **Top Layer**.

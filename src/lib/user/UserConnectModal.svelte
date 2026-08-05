@@ -9,14 +9,14 @@
 
   let { modalRef = $bindable(null), onClose }: Props = $props();
 
-  let selectedProvider = $state<MediaProvider>("AniList");
+  let selectedProvider = $state<MediaProvider>("ANILIST");
   let isSandboxMode = $state<boolean>(false);
   let sandboxUsername = $state("sandbox_user");
 
   const isLoading = $derived(userManager.isLoading);
 
   export function openModal() {
-    selectedProvider = "AniList";
+    selectedProvider = "ANILIST";
     isSandboxMode = false;
     sandboxUsername = "sandbox_user";
     modalRef?.showModal();
@@ -79,9 +79,9 @@
         <!-- AniList Provider Card -->
         <button
           type="button"
-          onclick={() => (selectedProvider = "AniList")}
+          onclick={() => (selectedProvider = "ANILIST")}
           class={`flex items-center gap-3 rounded-2xl border p-3.5 text-left transition-all duration-200 ${
-            selectedProvider === "AniList"
+            selectedProvider === "ANILIST"
               ? "border-info bg-info/10 ring-info/30 shadow-sm ring-2"
               : "border-base-300 bg-base-100 hover:border-base-content/20"
           }`}

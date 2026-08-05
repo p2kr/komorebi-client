@@ -1,0 +1,152 @@
+export type MediaProvider = "MAL" | "ANILIST";
+
+export type MediaType = "anime" | "manga";
+
+export type MediaFormat =
+  | "unknown"
+  | "tv"
+  | "tv_short"
+  | "movie"
+  | "special"
+  | "ova"
+  | "ona"
+  | "music"
+  | "manga"
+  | "novel"
+  | "one_shot"
+  | "doujinshi"
+  | "manhwa"
+  | "manhua"
+  | "oel";
+
+export type ReleaseStatus =
+  "unknown" | "releasing" | "finished" | "not_yet_released" | "cancelled" | "hiatus";
+
+export type ListStatus = "current" | "planning" | "completed" | "dropped" | "paused" | "repeating";
+
+export type NsfwLevel = "safe" | "gray" | "nsfw";
+
+export interface MediaTitle {
+  romanized?: string | null;
+  english?: string | null;
+  native?: string | null;
+  user_preferred?: string | null;
+}
+
+export interface CoverImage {
+  extra_large?: string | null;
+  large?: string | null;
+  medium?: string | null;
+  color?: string | null;
+}
+
+export interface Media {
+  id: string; // Uuid
+  provider_id: string;
+  provider: MediaProvider;
+  media_type: MediaType;
+  format: MediaFormat;
+  release_status: ReleaseStatus;
+  title: MediaTitle;
+  cover: CoverImage;
+  synopsis?: string | null;
+  mean_score?: number | null; // 0.0 - 10.0
+  popularity?: number | null;
+  episodes?: number | null;
+  duration?: number | null;
+  chapters?: number | null;
+  volumes?: number | null;
+  genres: string[];
+  nsfw: NsfwLevel;
+}
+
+export interface ListEntry {
+  status: ListStatus;
+  score?: number | null;
+  progress?: number | null;
+  progress_volumes?: number | null;
+  is_repeating: boolean;
+  repeat_count?: number | null;
+  tags: string[];
+  notes?: string | null;
+  updated_at?: string | null;
+}
+
+export interface MediaEntry {
+  media: Media;
+  list_entry: ListEntry;
+
+  // Client-side transient vault & download state helpers
+  in_vault?: boolean;
+  vault_unit_count?: number;
+  downloading?: boolean;
+  download_progress?: number;
+}
+
+export interface Paging {
+  next_cursor?: string | null;
+  prev_cursor?: string | null;
+  has_next: boolean;
+}
+
+export interface PaginatedResponse {
+  data: MediaEntry[];
+  paging: Paging;
+}
+
+/** Helper function to format MediaFormat into human-readable label */
+export function formatMediaFormatLabel(format: MediaFormat): string {
+  switch (format) {
+    case "tv":
+      return "TV";
+    case "tv_short":
+      return "TV Short";
+    case "movie":
+      return "Movie";
+    case "special":
+      return "Special";
+    case "ova":
+      return "OVA";
+    case "ona":
+      return "ONA";
+    case "music":
+      return "Music";
+    case "manga":
+      return "Manga";
+    case "novel":
+      return "Novel";
+    case "one_shot":
+      return "One-Shot";
+    case "doujinshi":
+      return "Doujinshi";
+    case "manhwa":
+      return "Manhwa";
+    case "manhua":
+      return "Manhua";
+    case "oel":
+      return "OEL";
+    default:
+      return "Unknown";
+  }
+}
+
+/** Helper function to format ListStatus into human-readable label */
+export function formatListStatusLabel(status: ListStatus | "ALL", mediaType: MediaType): string {
+  if (status === "ALL") return "All Statuses";
+  switch (status) {
+    case "current":
+      return mediaType === "anime" ? "Watching" : "Reading";
+    case "planning":
+      return mediaType === "anime" ? "Plan to Watch" : "Plan to Read";
+    case "completed":
+      return "Completed";
+    case "paused":
+      return "On Hold";
+    case "dropped":
+      return "Dropped";
+    case "repeating":
+      return mediaType === "anime" ? "Re-watching" : "Re-reading";
+    default:
+      return "Unknown";
+  }
+}

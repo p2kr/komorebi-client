@@ -16,7 +16,7 @@
 </script>
 
 <aside
-  class={`bg-base-200 text-base-content border-base-300 relative z-20 flex h-full flex-col border-r transition-all duration-300 ease-in-out select-none ${
+  class={`bg-base-200 text-base-content border-base-300 relative flex h-full flex-col border-r transition-all duration-300 ease-in-out select-none ${
     isCollapsed ? "w-16" : "w-64"
   }`}
 >

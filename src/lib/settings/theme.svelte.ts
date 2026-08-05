@@ -12,6 +12,15 @@ export interface ThemeOption {
   };
 }
 
+export interface FontOption {
+  id: string;
+  name: string;
+  category: "Sans-Serif" | "Monospace" | "Serif" | "Display";
+  fontFamily: string;
+  description: string;
+  sample: string;
+}
+
 export const THEME_PRESETS: ThemeOption[] = [
   {
     id: "light",
@@ -171,9 +180,85 @@ export const THEME_PRESETS: ThemeOption[] = [
   },
 ];
 
+export const FONT_PRESETS: FontOption[] = [
+  {
+    id: "inter",
+    name: "Inter",
+    category: "Sans-Serif",
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    description: "Clean, modern, highly legible sans-serif font designed for digital screens.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "jakarta",
+    name: "Plus Jakarta Sans",
+    category: "Sans-Serif",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    description: "Sleek geometric typography with bold structure and fresh aesthetics.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "outfit",
+    name: "Outfit",
+    category: "Sans-Serif",
+    fontFamily: "'Outfit', sans-serif",
+    description: "Contemporary geometric sans-serif built for bold headers and clean interfaces.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "nunito",
+    name: "Nunito",
+    category: "Sans-Serif",
+    fontFamily: "'Nunito', sans-serif",
+    description: "Rounded curves delivering a warm, approachable, and friendly reading feel.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "jetbrains",
+    name: "JetBrains Mono",
+    category: "Monospace",
+    fontFamily: "'JetBrains Mono', monospace",
+    description: "High-performance developer monospace font with distinct character shapes.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "fira-code",
+    name: "Fira Code",
+    category: "Monospace",
+    fontFamily: "'Fira Code', monospace",
+    description: "Popular monospaced font with clean ligatures and technical clarity.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "playfair",
+    name: "Playfair Display",
+    category: "Serif",
+    fontFamily: "'Playfair Display', Georgia, serif",
+    description: "High-contrast serif typeface providing editorial elegance and style.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "space-grotesk",
+    name: "Space Grotesk",
+    category: "Display",
+    fontFamily: "'Space Grotesk', sans-serif",
+    description: "Tech-inspired proportional display font with quirky futuristic charm.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+  {
+    id: "system",
+    name: "System Default",
+    category: "Sans-Serif",
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    description: "Native operating system font stack optimized for speed and familiarity.",
+    sample: "Komorebi • Modern Anime & Manga Desktop",
+  },
+];
+
 class ThemeManager {
   mode = $state<string>("system");
   resolvedTheme = $state<string>("dark");
+  font = $state<string>("inter");
 
   get presets(): ThemeOption[] {
     return THEME_PRESETS;
@@ -183,10 +268,21 @@ class ThemeManager {
     return THEME_PRESETS.find((p) => p.id === this.resolvedTheme);
   }
 
+  get fonts(): FontOption[] {
+    return FONT_PRESETS;
+  }
+
+  get activeFont(): FontOption {
+    return FONT_PRESETS.find((f) => f.id === this.font) || FONT_PRESETS[0];
+  }
+
   init() {
     if (typeof window === "undefined") return;
     const saved = localStorage.getItem("komorebi-theme") || "system";
     this.setMode(saved);
+
+    const savedFont = localStorage.getItem("komorebi-font") || "inter";
+    this.setFont(savedFont);
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     mediaQuery.addEventListener("change", () => {
@@ -202,6 +298,16 @@ class ThemeManager {
     this.applyTheme();
   }
 
+  setFont(fontId: string) {
+    this.font = fontId;
+    localStorage.setItem("komorebi-font", fontId);
+    this.applyFont();
+  }
+
+  resetFont() {
+    this.setFont("inter");
+  }
+
   private applyTheme() {
     let effective = this.mode;
     if (this.mode === "system") {
@@ -210,6 +316,13 @@ class ThemeManager {
     }
     this.resolvedTheme = effective;
     document.documentElement.setAttribute("data-theme", effective);
+  }
+
+  private applyFont() {
+    if (typeof window === "undefined") return;
+    const preset = FONT_PRESETS.find((f) => f.id === this.font) || FONT_PRESETS[0];
+    document.documentElement.style.setProperty("--app-font-family", preset.fontFamily);
+    document.documentElement.setAttribute("data-font", preset.id);
   }
 }
 

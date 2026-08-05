@@ -1,7 +1,7 @@
 import { doApiCall, type FailureResponse, type SuccessResponse } from "../utils/api";
 import { StorageKeys } from "../utils/constants";
 
-export type MediaProvider = "MAL" | "AniList";
+export type MediaProvider = "MAL" | "ANILIST";
 
 export interface User {
   id: string; // Uuid v7
@@ -107,7 +107,7 @@ class UserManager {
   }
 
   async addUser(
-    providerOrPayload: MediaProvider | CreateUserPayload = "AniList"
+    providerOrPayload: MediaProvider | CreateUserPayload = "ANILIST"
   ): Promise<User | null> {
     this.cancelOAuth(); // Cancel any existing pending OAuth flow
     this.isLoading = true;
