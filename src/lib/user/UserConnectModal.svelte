@@ -11,14 +11,14 @@
 
   let selectedProvider = $state<MediaProvider>("ANILIST");
   let isSandboxMode = $state<boolean>(false);
-  let sandboxUsername = $state("sandbox_user");
+  let sandboxUsername = $state("");
 
   const isLoading = $derived(userManager.isLoading);
 
   export function openModal() {
     selectedProvider = "ANILIST";
     isSandboxMode = false;
-    sandboxUsername = "sandbox_user";
+    sandboxUsername = "";
     modalRef?.showModal();
   }
 
@@ -31,7 +31,7 @@
   async function handleConnectAccount() {
     if (isSandboxMode) {
       await userManager.addUser({
-        username: sandboxUsername.trim() || "sandbox_user",
+        username: sandboxUsername.trim(),
         provider: selectedProvider,
         is_sandbox: true,
       });
@@ -56,8 +56,8 @@
           <Sparkles class="size-5" />
         </div>
         <div>
-          <h3 class="text-base-content text-base font-bold">Connect Media Service</h3>
-          <p class="text-base-content/60 text-xs">Sign in or connect using username</p>
+          <h3 class="text-base-content text-base font-bold sm:text-lg">Connect Media Service</h3>
+          <p class="text-base-content/70 text-sm">Sign in or connect using username</p>
         </div>
       </div>
       <button
@@ -72,7 +72,7 @@
 
     <!-- Provider Selector Tabs -->
     <div class="space-y-3">
-      <span class="text-base-content/70 text-xs font-bold tracking-wider uppercase"
+      <span class="text-base-content/70 text-sm font-bold tracking-wider uppercase"
         >1. Select Service</span
       >
       <div class="grid grid-cols-2 gap-3">
@@ -94,8 +94,8 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <span class="text-base-content block truncate text-xs font-bold">AniList</span>
-            <span class="text-base-content/60 block text-[10px]">AniList Library</span>
+            <span class="text-base-content block truncate text-sm font-bold">AniList</span>
+            <span class="text-base-content/70 block text-sm">AniList Library</span>
           </div>
         </button>
 
@@ -117,8 +117,8 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <span class="text-base-content block truncate text-xs font-bold">MyAnimeList</span>
-            <span class="text-base-content/60 block text-[10px]">MAL Library</span>
+            <span class="text-base-content block truncate text-sm font-bold">MyAnimeList</span>
+            <span class="text-base-content/70 block text-sm">MAL Library</span>
           </div>
         </button>
       </div>
@@ -126,7 +126,7 @@
 
     <!-- Connection Mode Selection -->
     <div class="space-y-3 pt-1">
-      <span class="text-base-content/70 text-xs font-bold tracking-wider uppercase"
+      <span class="text-base-content/70 text-sm font-bold tracking-wider uppercase"
         >2. Connection Method</span
       >
 
@@ -148,11 +148,9 @@
           </div>
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="text-base-content text-xs font-bold">Authenticated Sign-In</span>
+              <span class="text-base-content text-sm font-bold">Authenticated Sign-In</span>
             </div>
-            <p class="text-base-content/60 text-[11px]">
-              Sign in securely with your provider account
-            </p>
+            <p class="text-base-content/70 text-sm">Sign in securely with your provider account</p>
           </div>
         </div>
         {#if !isSandboxMode}
@@ -181,11 +179,11 @@
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="text-base-content text-xs font-bold"
+                <span class="text-base-content text-sm font-bold"
                   >Sandbox Connection (Username Only)</span
                 >
               </div>
-              <p class="text-base-content/60 text-[11px]">
+              <p class="text-base-content/70 text-sm">
                 Connect to {selectedProvider} library using just username
               </p>
             </div>
@@ -200,7 +198,7 @@
           <div class="border-warning/20 flex items-center gap-2 border-t pt-2">
             <label
               for="sandbox-username-input"
-              class="text-base-content/80 text-xs font-semibold whitespace-nowrap"
+              class="text-base-content/80 text-sm font-semibold whitespace-nowrap"
             >
               {selectedProvider} Username:
             </label>
@@ -208,10 +206,10 @@
               id="sandbox-username-input"
               type="text"
               bind:value={sandboxUsername}
-              placeholder={`e.g. ${selectedProvider.toLowerCase()}_user`}
+              placeholder=""
               required
               onclick={(e) => e.stopPropagation()}
-              class="input input-xs input-bordered bg-base-100 flex-1 rounded-lg text-xs font-semibold"
+              class="input input-sm input-bordered bg-base-100 flex-1 rounded-lg text-sm font-semibold"
             />
           </div>
         {/if}
@@ -221,7 +219,7 @@
     {#if !isSandboxMode}
       <!-- Info Banner -->
       <div
-        class="bg-base-200/40 border-base-300/80 text-base-content/70 flex items-center gap-2.5 rounded-2xl border p-3 text-xs"
+        class="bg-base-200/40 border-base-300/80 text-base-content/70 flex items-center gap-2.5 rounded-2xl border p-3 text-sm"
       >
         <ExternalLink class="text-primary size-4 shrink-0" />
         <span>Redirects to sign-in page. You will have 3 minutes to complete sign-in.</span>

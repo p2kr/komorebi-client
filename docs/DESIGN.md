@@ -15,18 +15,12 @@ design_tokens:
     font_family_mono: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
     font_family_brand: "'Segoe Script', 'Segoe Print', cursive, sans-serif"
     scale:
-      xs: "12px/16px"
-      sm: "14px/20px"
-      base: "16px/24px"
-      lg: "18px/28px"
-      xl: "20px/28px"
-  spacing:
-    unit: "4px"
-    scale: [1, 2, 3, 4, 5, 6, 8, 10, 12, 16]
-  shapes:
-    corner_radius_sm: "8px"
-    corner_radius_md: "12px"
-    corner_radius_lg: "16px"
+      sm: "14px/20px (0.875rem - strict application minimum)"
+      base: "16px/24px (1rem)"
+      lg: "18px/28px (1.125rem)"
+      xl: "20px/28px (1.25rem)"
+      "2xl": "24px/32px (1.5rem)"
+      "3xl": "30px/36px (1.875rem)"
 ---
 
 # Overview & Aesthetic Summary
@@ -76,14 +70,19 @@ The application uses DaisyUI semantic color abstractions mapped to Tailwind CSS 
 - **Monospace (Data / Tokens / Badges)**: `ui-monospace, SFMono-Regular, Consolas, monospace`
 - **Brand Display Font**: `"Segoe Script", "Segoe Print", cursive, sans-serif` (`.font-segoe-script`)
 
-### Type Scale & Hierarchy
+### Type Scale & Relative Sizing Rules
 
-- **Application Page Titles (`3xl` / `2xl`)**: `24px` to `30px` (`text-2xl sm:text-3xl`), `font-bold`, `tracking-tight`.
-- **Section Headers (`lg`)**: `18px/28px`, `font-semibold`, `text-base-content`.
-- **Subheaders & Card Headers (`base`)**: `16px/24px`, `font-bold` or `font-semibold`.
-- **Body & Component Labels (`sm`)**: `14px/20px`, `font-medium` or `font-normal`.
-- **Captions & Secondary Labels (`xs`)**: `12px/16px`, `text-base-content/70`.
-- **Badges & Metadata (`11px` / `10px` / `9px` / `8px`)**: Monospace uppercase or bold pill tags (`font-mono text-[9px]`, `text-[10px] uppercase`).
+1. **Strict 14px Minimum (`0.875rem`)**: No text element anywhere in the application falls below `14px` (`text-sm`). Micro-text overrides (`text-xs`, `text-[8px]`, `text-[9px]`, `text-[10px]`, `text-[11px]`, `text-[12px]`) are prohibited across all components.
+2. **Relative Scale Units**: All typography sizes use CSS relative units (`rem`, `em`, and relative Tailwind scale classes) to ensure responsiveness and accessibility under browser zooming.
+
+| Hierarchy Level                   | Tailwind Classes                                | Size (rem / px)                      | Usage                                                  |
+| :-------------------------------- | :---------------------------------------------- | :----------------------------------- | :----------------------------------------------------- |
+| **Application Page Title (`h1`)** | `text-2xl sm:text-3xl font-bold tracking-tight` | `1.5rem` – `1.875rem` (24px – 30px)  | View headers (`Settings`, `SmartMatcher`, `Dashboard`) |
+| **Section Header (`h2`)**         | `text-lg sm:text-xl font-bold tracking-tight`   | `1.125rem` – `1.25rem` (18px – 20px) | Section cards and tab headers                          |
+| **Subheader / Card Title (`h3`)** | `text-base sm:text-lg font-bold`                | `1rem` – `1.125rem` (16px – 18px)    | Media titles, matcher target titles, modal titles      |
+| **Body & Interactive Controls**   | `text-sm sm:text-base font-medium`              | `0.875rem` – `1rem` (14px – 16px)    | Form inputs, buttons, body content                     |
+| **Subtitles & Descriptions**      | `text-sm text-base-content/70`                  | `0.875rem` (14px min)                | Subtitles, helper text, version tags                   |
+| **Badges, Chips & Labels**        | `text-sm font-semibold`                         | `0.875rem` (14px min)                | All metadata chips, status overlays, badges            |
 
 # Layout & Spacing
 
@@ -126,15 +125,29 @@ Built on an exact `4px` grid system using standard Tailwind spacing multipliers:
 
 ### Badges (`badge`)
 
-- **Provider Indicators**: Compact metadata pills (`badge-xs font-mono text-[9px]`).
+- **Provider Indicators**: Standardized readable metadata tags (`badge-sm text-sm font-semibold`).
   - _AniList_: `badge-info text-info-content`
   - _MyAnimeList_: `badge-primary text-primary-content`
-  - _Sandbox_: `badge-warning badge-xs`
+  - _Sandbox_: `badge-warning badge-sm text-sm`
 
 ### Search & Filter Controls Panel
 
 - **Glassmorphic Container**: Bordered card with subtle blur backdrop (`border-base-300 bg-base-100/90 backdrop-blur-md rounded-2xl p-4 shadow-sm`).
 - **Inline Filter Dropdowns**: Interactive popovers using DaisyUI dropdown utilities (`dropdown-content menu bg-base-100 border-base-200 mt-1.5 w-full rounded-xl border p-1 shadow-xl backdrop-blur-lg`).
+
+### Tooltips (`.tooltip` & `data-tip`)
+
+- **Design Choice & Rationale**: All interactive elements, metadata chips, and icon action buttons strictly standardize on DaisyUI `.tooltip` containers with `data-tip="..."` attributes instead of native browser `title="..."` attributes.
+  - _Visual & Theme Integration_: Standard HTML `title` attributes render as unstyled OS-level yellow/grey boxes that break the app's DaisyUI theme system. `data-tip` uses modern CSS variables, matching active typography, crisp borders, and dark mode automatically.
+  - _Instant Responsiveness_: Native `title` tooltips introduce an artificial browser hover delay (500ms–1000ms pause) before appearing. `data-tip` tooltips render instantly on hover/focus with fluid CSS transitions.
+  - _Precise Position Control_: Supports directional positioning modifiers (`tooltip-top`, `tooltip-bottom`, `tooltip-right`, `tooltip-left`) to prevent tooltips from obscuring adjacent interactive controls.
+
+### Dashboard Preferences & Unified Live Preview Card
+
+- **Segmented Title Switcher**: Pill tab control (`[ English First | Romanized First ]`) with icon indicators (`Languages` / `Globe`) replacing bulky grid cards.
+- **Unified Live Card Preview (`LiveCardPreview.svelte`)**: Interactive preview card combining real-time title hierarchy rendering and active visible metadata chips. Updates dynamically as settings are toggled.
+- **Dynamic Metadata Chip Registry (`chipRegistry.ts`)**: Modular icon dictionary (`CHIP_ICON_MAP`) and model registry (`CHIP_DEFINITIONS`) covering all `Media` and `ListEntry` fields (`rating`, `popularity`, `source`, `format`, `season`, `episodes_duration`, `chapters_volumes`, `genres`, `nsfw`, `personal_score`, `user_tags`).
+- **Unified Rating Setting**: The permanent `rating` chip option is styled identically to all other metadata options (same border, padding, and font scale), with `checked={true}`, `disabled={true}`, and a subtle `Fixed` badge tag (eliminating bright yellow notice boxes).
 
 ### Modals & Dialogs
 

@@ -15,22 +15,20 @@ export interface FailureResponse {
 
 export type Response<T> = SuccessResponse<T> | FailureResponse;
 
-const BASE_URL = "http://localhost:8080/api/v1";
+const BASE_URL = "/api/v1";
 
 export async function doApiCall<T>(
   url: string,
-  params?: object,
-  method: "GET" | "POST" | "DELETE" = "GET",
+  data?: object,
   signal?: AbortSignal
 ): Promise<Response<T>> {
   try {
-    const resp = await axios({
+    const resp = await axios.post(url, data, {
       baseURL: BASE_URL,
-      url: url,
-      params: method === "GET" ? params : undefined,
-      data: method !== "GET" ? params : undefined,
-      method: method,
-      signal: signal,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      signal,
     });
     return resp.data;
   } catch (e: unknown) {

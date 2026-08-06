@@ -86,7 +86,7 @@
       data-tip={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
     >
       {#if !isCollapsed}
-        <span class="text-base-content/70 text-xs">Collapse</span>
+        <span class="text-base-content/70 text-sm font-medium">Collapse</span>
         <ChevronLeft class="size-4" />
       {:else}
         <ChevronRight class="size-4" />

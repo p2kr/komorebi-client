@@ -1,31 +1,9 @@
-import { doApiCall, type FailureResponse, type SuccessResponse } from "../utils/api";
 import { StorageKeys } from "../utils/constants";
+import { userService } from "@services/userService";
+import type { User, CreateUserPayload, MediaProvider } from "@type/user";
 
-export type MediaProvider = "MAL" | "ANILIST";
-
-export interface User {
-  id: string; // Uuid v7
-  username: string;
-  avatar_url: string | null;
-  provider: MediaProvider;
-  access_token?: string | null;
-  is_sandbox?: boolean;
-  created_at: number; // timestamp millis
-  updated_at: number; // timestamp millis
-}
-
-export interface CreateUserPayload {
-  username?: string;
-  provider: MediaProvider;
-  avatar_url?: string | null;
-  access_token?: string | null;
-  is_sandbox?: boolean;
-}
-
-export function isUserSandbox(user: User | null | undefined): boolean {
-  if (!user) return true;
-  return user.is_sandbox ?? (!user.access_token || user.access_token.trim() === "");
-}
+export { isUserSandbox } from "@type/user";
+export type { User, CreateUserPayload, MediaProvider };
 
 class UserManager {
   users = $state<User[]>([]);
@@ -43,15 +21,13 @@ class UserManager {
     this.isLoading = true;
     this.error = null;
     try {
-      const response = await doApiCall<User[]>("user/all");
-      if (response.success) {
-        this.users = (response as SuccessResponse<User[]>).data;
-        this.restoreActiveUser();
+      const result = await userService.fetchUsers();
+      if (result.error) {
+        this.error = result.error;
       } else {
-        const failure = response as FailureResponse;
-        this.error = `Failed to fetch users: ${failure.error?.msg || "Unknown error"}`;
-        this.restoreActiveUser();
+        this.users = result.users;
       }
+      this.restoreActiveUser();
     } catch (err: unknown) {
       this.error = err instanceof Error ? err.message : "Network error fetching users";
       this.restoreActiveUser();
@@ -142,34 +118,25 @@ class UserManager {
     }, OAUTH_TIMEOUT_MS);
 
     try {
-      const response = await doApiCall(
-        "user/add",
+      const result = await userService.addUser(
         {
           provider,
           username,
           avatar_url,
           access_token,
+          is_sandbox,
         },
-        "POST",
         controller.signal
       );
 
-      if (response.success) {
-        const newUser: User = (response as SuccessResponse<User>).data;
-        this.users = [...this.users, newUser];
-        this.selectUser(newUser.id);
-        return newUser;
-      } else {
-        const failure = response as FailureResponse;
-        this.error = `Failed to add user: ${failure.error?.msg || "Unknown error"}`;
+      if (result.user) {
+        this.users = [...this.users, result.user];
+        this.selectUser(result.user.id);
+        return result.user;
+      } else if (result.error) {
+        this.error = result.error;
       }
     } catch (err: unknown) {
-      if (err instanceof Error && err.name === "AbortError") {
-        if (controller.signal.reason === "timeout") {
-          this.error = "Sign-in timed out after 3 minutes. Please try again.";
-        }
-        return null;
-      }
       this.error = err instanceof Error ? err.message : "Network error adding user";
     } finally {
       clearTimeout(timeoutId);
@@ -185,14 +152,12 @@ class UserManager {
     this.isLoading = true;
     this.error = null;
     try {
-      const response = await doApiCall("user/delete", { id }, "DELETE");
-
-      if (response.success) {
+      const result = await userService.deleteUser(id);
+      if (result.success) {
         this.handleLocalDelete(id);
         return true;
-      } else {
-        const failure = response as FailureResponse;
-        this.error = `Failed to delete user: ${failure.error?.msg || "Unknown error"}`;
+      } else if (result.error) {
+        this.error = result.error;
       }
     } catch (err: unknown) {
       this.error = err instanceof Error ? err.message : "Network error deleting user";

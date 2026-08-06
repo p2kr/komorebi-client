@@ -64,7 +64,7 @@
               <span>Manga</span>
             {/if}
           </span>
-          <span class="text-xs opacity-50">▼</span>
+          <span class="text-sm opacity-50">▼</span>
         </div>
         <ul
           class="dropdown-content menu bg-base-100 border-base-200 z-50 mt-1.5 w-full rounded-xl border p-1 shadow-xl backdrop-blur-lg"
@@ -108,7 +108,7 @@
           <span class="truncate">
             {formatListStatusLabel(dashboardStore.selectedStatus, dashboardStore.selectedType)}
           </span>
-          <span class="text-xs opacity-50">▼</span>
+          <span class="text-sm opacity-50">▼</span>
         </div>
         <ul
           class="dropdown-content menu bg-base-100 border-base-200 z-50 mt-1.5 w-full rounded-xl border p-1 shadow-xl backdrop-blur-lg"
@@ -197,12 +197,12 @@
             {:else if dashboardStore.sortBy === "updated"}Updated
             {/if}
           </span>
-          <span class="text-xs opacity-50">▼</span>
+          <span class="text-sm opacity-50">▼</span>
         </div>
         <ul
           class="dropdown-content menu bg-base-100 border-base-200 z-50 mt-1.5 w-44 rounded-xl border p-1 shadow-xl backdrop-blur-lg"
         >
-          <li class="menu-title text-base-content/50 px-2 py-1 text-[10px] font-semibold uppercase">
+          <li class="menu-title text-base-content/60 px-2 py-1 text-sm font-semibold uppercase">
             Sort Order
           </li>
           <li>
@@ -257,7 +257,7 @@
     <!-- Item Count Badge - Span 2 on desktop (End aligned) -->
     <div class="flex items-center justify-end sm:col-span-2">
       <span
-        class="badge badge-primary badge-md w-full justify-center rounded-xl px-3 py-2 text-center text-xs font-semibold sm:w-auto"
+        class="badge badge-primary badge-md w-full justify-center rounded-xl px-3 py-2 text-center text-sm font-semibold sm:w-auto"
       >
         {dashboardStore.filteredEntries.length} items
       </span>

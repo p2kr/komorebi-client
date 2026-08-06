@@ -3,10 +3,9 @@
     WandSparkles,
     Search,
     FileCode,
-    CheckCircle2,
+    CircleCheck,
     RefreshCw,
     Layers,
-    Info,
     Inbox,
   } from "@lucide/svelte";
   import { dashboardStore } from "@dashboard/dashboardStore.svelte";
@@ -59,8 +58,10 @@
         <WandSparkles class="size-5" />
       </div>
       <div>
-        <h1 class="text-base-content text-2xl font-bold tracking-tight">Smart Matcher</h1>
-        <p class="text-base-content/65 text-xs sm:text-sm">
+        <h1 class="text-base-content text-2xl font-bold tracking-tight sm:text-3xl">
+          Smart Matcher
+        </h1>
+        <p class="text-base-content/70 text-sm sm:text-base">
           Match media entries with parser sources, torrent feeds, and crawlers
         </p>
       </div>
@@ -84,24 +85,24 @@
             />
           {:else}
             <div
-              class="bg-base-300 flex h-16 w-12 items-center justify-center rounded-lg text-xs font-bold"
+              class="bg-base-300 flex h-16 w-12 items-center justify-center rounded-lg text-sm font-bold"
             >
               {selectedEntry.media.media_type.toUpperCase()}
             </div>
           {/if}
           <div>
             <span
-              class="badge badge-secondary badge-xs mb-1 font-semibold tracking-wider uppercase"
+              class="badge badge-secondary badge-sm mb-1 text-sm font-semibold tracking-wider uppercase"
             >
               Active Match Target
             </span>
-            <h2 class="text-base-content text-lg leading-tight font-bold">
+            <h2 class="text-base-content text-lg leading-tight font-bold sm:text-xl">
               {selectedEntry.media.title.user_preferred ||
                 selectedEntry.media.title.english ||
                 selectedEntry.media.title.romanized}
             </h2>
             {#if selectedEntry.media.title.native || selectedEntry.media.title.romanized}
-              <p class="text-base-content/60 text-xs italic">
+              <p class="text-base-content/70 text-sm italic">
                 {selectedEntry.media.title.native || selectedEntry.media.title.romanized}
               </p>
             {/if}
@@ -109,10 +110,10 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="badge badge-outline text-xs capitalize">
+          <span class="badge badge-outline badge-sm text-sm capitalize">
             {selectedEntry.media.media_type} • {formatMediaFormatLabel(selectedEntry.media.format)}
           </span>
-          <span class="badge badge-primary badge-outline text-xs">
+          <span class="badge badge-primary badge-outline badge-sm text-sm">
             Progress: {selectedEntry.list_entry.progress || 0}/{selectedEntry.media.episodes ||
               selectedEntry.media.chapters ||
               "?"}
@@ -163,7 +164,7 @@
         <span>Matching Source Feeds</span>
       </h3>
       {#if hasSearched}
-        <span class="text-base-content/50 text-xs"
+        <span class="text-base-content/60 text-sm"
           >Found {searchResults.length} verified matches</span
         >
       {/if}
@@ -172,7 +173,7 @@
     {#if isSearching}
       <div class="flex flex-col items-center justify-center space-y-3 py-12">
         <RefreshCw class="text-primary size-8 animate-spin" />
-        <p class="text-base-content/60 text-xs font-medium">
+        <p class="text-base-content/70 text-sm font-medium">
           Scanning configured parser sources...
         </p>
       </div>
@@ -184,27 +185,30 @@
           >
             <div class="flex items-start gap-3">
               <div
-                class="bg-base-200 text-base-content/70 mt-0.5 flex size-9 flex-shrink-0 items-center justify-center rounded-xl"
+                class="bg-base-200 text-base-content/70 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl"
               >
                 <FileCode class="size-5" />
               </div>
               <div>
                 <div class="flex items-center gap-2">
                   <span class="text-base-content text-sm font-bold">{res.sourceName}</span>
-                  <span class="badge badge-success badge-xs font-bold">
+                  <span class="badge badge-success badge-sm text-sm font-bold">
                     {(res.score * 100).toFixed(0)}% Match
                   </span>
-                  <span class="badge badge-ghost badge-xs">{res.quality}</span>
+                  <span class="badge badge-ghost badge-sm text-sm">{res.quality}</span>
                 </div>
-                <p class="text-base-content/70 mt-1 font-mono text-xs">
+                <p class="text-base-content/70 mt-1 font-mono text-sm">
                   {res.matchedTitle}
                 </p>
               </div>
             </div>
 
             <div class="flex items-center gap-2 self-end sm:self-center">
-              <button type="button" class="btn btn-secondary btn-outline btn-xs gap-1 rounded-lg">
-                <CheckCircle2 class="size-3.5" />
+              <button
+                type="button"
+                class="btn btn-secondary btn-outline btn-sm gap-1 rounded-lg text-sm"
+              >
+                <CircleCheck class="size-4" />
                 <span>Bind Match</span>
               </button>
             </div>
@@ -216,7 +220,7 @@
         class="border-base-300 bg-base-100/60 flex flex-col items-center justify-center rounded-2xl border border-dashed py-12 text-center"
       >
         <Inbox class="text-base-content/30 mb-2 size-8" />
-        <p class="text-base-content/60 text-xs font-medium">
+        <p class="text-base-content/70 text-sm font-medium">
           {hasSearched
             ? "No parser matches found for this query."
             : "Enter a search query or trigger Smart Matcher from your dashboard."}

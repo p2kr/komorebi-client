@@ -6,12 +6,17 @@ import type { MediaEntry, MediaType, ListStatus } from "../types/media";
 export type TitleHierarchyMode = "primary_first" | "alternate_first";
 
 export interface MetadataChipSettings {
+  rating: boolean;
   popularity: boolean;
   source: boolean;
   format: boolean;
   season: boolean;
-  studio: boolean;
+  episodes_duration: boolean;
+  chapters_volumes: boolean;
   genres: boolean;
+  nsfw: boolean;
+  personal_score: boolean;
+  user_tags: boolean;
 }
 
 class DashboardStore {
@@ -33,12 +38,17 @@ class DashboardStore {
   // Settings
   titleHierarchy = $state<TitleHierarchyMode>("primary_first");
   visibleChips = $state<MetadataChipSettings>({
+    rating: true,
     popularity: true,
     source: true,
     format: true,
     season: true,
-    studio: true,
+    episodes_duration: true,
+    chapters_volumes: true,
     genres: false,
+    nsfw: false,
+    personal_score: true,
+    user_tags: false,
   });
 
   // Infinite Scroll Pagination
@@ -92,11 +102,15 @@ class DashboardStore {
     let list = this.allEntries;
 
     // Filter strictly by selected Media Type ("anime" | "manga")
-    list = list.filter((e) => e.media.media_type === this.selectedType);
+    list = list.filter(
+      (e) => (e.media.media_type || "").toLowerCase() === this.selectedType.toLowerCase()
+    );
 
     // Filter by List Status
     if (this.selectedStatus !== "ALL") {
-      list = list.filter((e) => e.list_entry.status === this.selectedStatus);
+      list = list.filter(
+        (e) => (e.list_entry.status || "").toLowerCase() === this.selectedStatus.toLowerCase()
+      );
     }
 
     // Filter by Search Query
@@ -154,11 +168,17 @@ class DashboardStore {
   // Stats summaries
   stats = $derived.by(() => {
     const total = this.allEntries.length;
-    const animeCount = this.allEntries.filter((e) => e.media.media_type === "anime").length;
-    const mangaCount = this.allEntries.filter((e) => e.media.media_type === "manga").length;
-    const watchingCount = this.allEntries.filter((e) => e.list_entry.status === "current").length;
+    const animeCount = this.allEntries.filter(
+      (e) => (e.media.media_type || "").toLowerCase() === "anime"
+    ).length;
+    const mangaCount = this.allEntries.filter(
+      (e) => (e.media.media_type || "").toLowerCase() === "manga"
+    ).length;
+    const watchingCount = this.allEntries.filter(
+      (e) => (e.list_entry.status || "").toLowerCase() === "current"
+    ).length;
     const completedCount = this.allEntries.filter(
-      (e) => e.list_entry.status === "completed"
+      (e) => (e.list_entry.status || "").toLowerCase() === "completed"
     ).length;
     return { total, animeCount, mangaCount, watchingCount, completedCount };
   });
@@ -201,6 +221,7 @@ class DashboardStore {
   }
 
   toggleChipSetting(chipKey: keyof MetadataChipSettings) {
+    if (chipKey === "rating") return;
     this.visibleChips = {
       ...this.visibleChips,
       [chipKey]: !this.visibleChips[chipKey],

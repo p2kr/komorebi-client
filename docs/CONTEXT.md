@@ -46,3 +46,7 @@ The media grid management interface permitting real-time search (by title, Romaj
 ### HTML Top Layer & Natural Stacking Architecture
 
 The layout architecture relies on native HTML DOM flow and modern browser APIs instead of manual CSS `z-index` micro-management. Page elements (headers, sidebars, panels) follow standard Flexbox document order, while modals (`UserConnectModal`, `DashboardSettingsModal`) utilize native HTML `<dialog>` elements promoted directly into the browser's native **Top Layer**.
+
+### Universal Tooltip Standardization
+
+All interactive elements, action buttons, metadata chips, and icon triggers strictly standardize on DaisyUI `.tooltip` containers with `data-tip="..."` attributes. Native browser tooltips (`title="..."` attributes) are prohibited across the entire application interface to maintain visual consistency, custom theme styling, and uniform interactive behavior.

@@ -13,7 +13,7 @@
       <h2 class="font-segoe-script text-base-content text-xl font-bold">
         {Constants.APP_NAME}
       </h2>
-      <p class="text-base-content/70 text-xs">Client Version 0.0.1</p>
+      <p class="text-base-content/70 text-sm font-medium">Client Version 0.0.1</p>
     </div>
   </div>
   <div class="divider my-2"></div>

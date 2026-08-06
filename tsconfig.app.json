@@ -32,7 +32,8 @@
       "@user/*": ["./src/lib/user/*"],
       "@store/*": ["./src/lib/store/*"],
       "@services/*": ["./src/lib/services/*"],
-      "@types/*": ["./src/lib/types/*"]
+      "@types/*": ["./src/lib/types/*"],
+      "@type/*": ["./src/lib/types/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]

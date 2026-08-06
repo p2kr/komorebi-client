@@ -48,8 +48,8 @@
         <Loader2 class="size-8 animate-spin" />
       </div>
       <div>
-        <h3 class="text-base-content text-base font-bold">Fetching Library</h3>
-        <p class="text-base-content/60 mt-1 text-xs">
+        <h3 class="text-base-content text-base font-bold sm:text-lg">Fetching Library</h3>
+        <p class="text-base-content/70 mt-1 text-sm">
           Connecting to server and retrieving media entries...
         </p>
       </div>
@@ -78,8 +78,8 @@
       <div class="bg-error/15 text-error mb-3 flex size-12 items-center justify-center rounded-2xl">
         <AlertCircle class="size-6" />
       </div>
-      <h3 class="text-base-content text-base font-bold">Failed to Load Media</h3>
-      <p class="text-base-content/70 mt-1 max-w-md font-mono text-xs">
+      <h3 class="text-base-content text-base font-bold sm:text-lg">Failed to Load Media</h3>
+      <p class="text-base-content/70 mt-1 max-w-md font-mono text-sm">
         {dashboardStore.error}
       </p>
       <button
@@ -105,14 +105,14 @@
     <div bind:this={sentinelEl} class="flex min-h-16 flex-col items-center justify-center py-6">
       {#if dashboardStore.isLoadingMore}
         <div
-          class="bg-base-200/80 text-base-content/70 border-base-300 flex animate-pulse items-center gap-3 rounded-full border px-4 py-2 text-xs font-medium shadow-sm"
+          class="bg-base-200/80 text-base-content/70 border-base-300 flex animate-pulse items-center gap-3 rounded-full border px-4 py-2 text-sm font-medium shadow-sm"
         >
           <Loader2 class="text-primary size-4 animate-spin" />
           <span>Loading more items...</span>
         </div>
       {:else if !dashboardStore.hasMore}
-        <div class="text-base-content/50 flex items-center gap-2 text-xs font-medium">
-          <Sparkles class="text-primary/60 size-3.5" />
+        <div class="text-base-content/60 flex items-center gap-2 text-sm font-medium">
+          <Sparkles class="text-primary/60 size-4" />
           <span>End of library ({dashboardStore.allEntries.length} items loaded)</span>
         </div>
       {/if}

@@ -1,8 +1,23 @@
 export type MediaProvider = "MAL" | "ANILIST";
 
-export type MediaType = "anime" | "manga";
+export type MediaType = "Anime" | "Manga" | "anime" | "manga";
 
 export type MediaFormat =
+  | "Unknown"
+  | "Tv"
+  | "TvShort"
+  | "Movie"
+  | "Special"
+  | "Ova"
+  | "Ona"
+  | "Music"
+  | "Manga"
+  | "Novel"
+  | "OneShot"
+  | "Doujinshi"
+  | "Manhwa"
+  | "Manhua"
+  | "Oel"
   | "unknown"
   | "tv"
   | "tv_short"
@@ -20,11 +35,34 @@ export type MediaFormat =
   | "oel";
 
 export type ReleaseStatus =
-  "unknown" | "releasing" | "finished" | "not_yet_released" | "cancelled" | "hiatus";
+  | "Unknown"
+  | "Releasing"
+  | "Finished"
+  | "NotYetReleased"
+  | "Cancelled"
+  | "Hiatus"
+  | "unknown"
+  | "releasing"
+  | "finished"
+  | "not_yet_released"
+  | "cancelled"
+  | "hiatus";
 
-export type ListStatus = "current" | "planning" | "completed" | "dropped" | "paused" | "repeating";
+export type ListStatus =
+  | "Current"
+  | "Planning"
+  | "Completed"
+  | "Dropped"
+  | "Paused"
+  | "Repeating"
+  | "current"
+  | "planning"
+  | "completed"
+  | "dropped"
+  | "paused"
+  | "repeating";
 
-export type NsfwLevel = "safe" | "gray" | "nsfw";
+export type NsfwLevel = "Safe" | "Gray" | "Nsfw" | "safe" | "gray" | "nsfw";
 
 export interface MediaTitle {
   romanized?: string | null;
@@ -94,59 +132,5 @@ export interface PaginatedResponse {
   paging: Paging;
 }
 
-/** Helper function to format MediaFormat into human-readable label */
-export function formatMediaFormatLabel(format: MediaFormat): string {
-  switch (format) {
-    case "tv":
-      return "TV";
-    case "tv_short":
-      return "TV Short";
-    case "movie":
-      return "Movie";
-    case "special":
-      return "Special";
-    case "ova":
-      return "OVA";
-    case "ona":
-      return "ONA";
-    case "music":
-      return "Music";
-    case "manga":
-      return "Manga";
-    case "novel":
-      return "Novel";
-    case "one_shot":
-      return "One-Shot";
-    case "doujinshi":
-      return "Doujinshi";
-    case "manhwa":
-      return "Manhwa";
-    case "manhua":
-      return "Manhua";
-    case "oel":
-      return "OEL";
-    default:
-      return "Unknown";
-  }
-}
-
-/** Helper function to format ListStatus into human-readable label */
-export function formatListStatusLabel(status: ListStatus | "ALL", mediaType: MediaType): string {
-  if (status === "ALL") return "All Statuses";
-  switch (status) {
-    case "current":
-      return mediaType === "anime" ? "Watching" : "Reading";
-    case "planning":
-      return mediaType === "anime" ? "Plan to Watch" : "Plan to Read";
-    case "completed":
-      return "Completed";
-    case "paused":
-      return "On Hold";
-    case "dropped":
-      return "Dropped";
-    case "repeating":
-      return mediaType === "anime" ? "Re-watching" : "Re-reading";
-    default:
-      return "Unknown";
-  }
-}
+// Re-export utility formatters for UI component compatibility
+export { formatMediaFormatLabel, formatListStatusLabel } from "../utils/mediaFormatter";

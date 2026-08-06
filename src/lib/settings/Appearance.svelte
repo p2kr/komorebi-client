@@ -32,8 +32,8 @@
   <!-- Minimal Header & Reset -->
   <div class="border-base-300 flex items-center justify-between border-b pb-4">
     <div>
-      <h2 class="text-base-content text-lg font-bold">Appearance & Display</h2>
-      <p class="text-base-content/60 text-xs">
+      <h2 class="text-base-content text-lg font-bold sm:text-xl">Appearance & Display</h2>
+      <p class="text-base-content/70 text-sm">
         Customize theme mode, color schemes, and typography
       </p>
     </div>
@@ -41,7 +41,7 @@
       <button
         type="button"
         onclick={handleResetAll}
-        class="btn btn-ghost btn-xs text-base-content/70 hover:text-base-content gap-1.5"
+        class="btn btn-ghost btn-sm text-base-content/70 hover:text-base-content gap-1.5 text-sm"
       >
         <RotateCcw class="size-3.5" />
         Reset to Default
@@ -53,7 +53,7 @@
   <div class="border-base-300 bg-base-100 space-y-3 rounded-2xl border p-4">
     <div class="flex items-center gap-2">
       <Sun class="text-primary size-4" />
-      <span class="text-base-content/70 text-xs font-semibold tracking-wider uppercase"
+      <span class="text-base-content/70 text-sm font-semibold tracking-wider uppercase"
         >Theme Mode</span
       >
     </div>
@@ -65,7 +65,7 @@
         <button
           type="button"
           onclick={() => handleSelectMode(mode.id)}
-          class={`flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-medium transition-all ${
+          class={`flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
             isSelected
               ? "bg-primary text-primary-content font-semibold shadow-xs"
               : "bg-base-200/60 text-base-content/80 hover:bg-base-200"
@@ -83,7 +83,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <Palette class="text-primary size-4" />
-        <span class="text-base-content/70 text-xs font-semibold tracking-wider uppercase"
+        <span class="text-base-content/70 text-sm font-semibold tracking-wider uppercase"
           >Color Presets</span
         >
       </div>
@@ -102,7 +102,7 @@
               : "border-base-300 hover:border-base-content/20 bg-base-100"
           }`}
         >
-          <span class="text-base-content truncate text-xs font-semibold">{preset.name}</span>
+          <span class="text-base-content truncate text-sm font-semibold">{preset.name}</span>
 
           <div class="flex items-center gap-1">
             <div class="border-base-300 flex h-3.5 w-7 overflow-hidden rounded border">
@@ -127,11 +127,11 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <Type class="text-primary size-4" />
-        <span class="text-base-content/70 text-xs font-semibold tracking-wider uppercase"
+        <span class="text-base-content/70 text-sm font-semibold tracking-wider uppercase"
           >Typography Font</span
         >
       </div>
-      <span class="text-base-content/60 text-xs font-medium"
+      <span class="text-base-content/70 text-sm font-medium"
         >Active: <span class="text-primary font-bold">{activeFont.name}</span></span
       >
     </div>
@@ -149,13 +149,13 @@
           }`}
         >
           <div class="flex items-center justify-between">
-            <span class="text-base-content text-xs font-bold">{fontPreset.name}</span>
+            <span class="text-base-content text-sm font-bold">{fontPreset.name}</span>
             {#if isSelected}
-              <Check class="text-primary size-3.5" />
+              <Check class="text-primary size-4" />
             {/if}
           </div>
           <div
-            class="text-base-content/70 mt-2 truncate text-xs"
+            class="text-base-content/70 mt-2 truncate text-sm"
             style={`font-family: ${fontPreset.fontFamily}`}
           >
             {fontPreset.sample}
